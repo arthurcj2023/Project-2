@@ -5,6 +5,8 @@
 *
 * -------------------------------------------------------
 */
+
+// Import needed libraries as constants
 const express = require('express');
 const fs = require('fs');
 const mysql = require('mysql');
@@ -20,26 +22,33 @@ const mysql = require('mysql');
 // Variable to hold SQL connection
 let connection = null;
 // Function to create the SQL connection
-function createSQLConnection() {
+async function createSQLConnection() {
+    // Load in credentials from credentials.json
     const credentials = JSON.parse(fs.readFileSync('credentials.json', 'utf8'));
+    // Create the SQL connection
     connection = mysql.createConnection(credentials);
-    connection.connect(error => {
+    // Attempt to connect to the database pointed to by the JSON data
+    await new Promise((resolve) => { connection.connect(error => {
         if (error) {
             console.error(error);
             process.exit(-1);
         }
-        console.log("An SQL connection was established to: " + credentials.database + " located at: " + credentials.host + " by: " + credentials.user);
-    });
+        console.log("An SQL connection was established to: " + credentials.database + " at: " + credentials.host + " by: " + credentials.user + ".");
+        resolve(0);
+    })});
 }
 // Function to query the SQL connection
-async function querySQLConnection(query) {
-    await connection.query(query, (error, rows) => {
-        if (error) {
-            return -1;
-        } else {
-            return rows;
-        }
-    });  
+function querySQLConnection(query) {
+    return new Promise((resolve) => {
+        // Send the query to the connection
+        connection.query(query, (error, rows) => {
+            if (error) {
+                resolve(error);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
 }
 
 /*
@@ -50,20 +59,19 @@ async function querySQLConnection(query) {
 * -------------------------------------------------------
 */
 
-//  Set up the service
-const service = express();
-service.use(express.json());
-// Get all restaurants with the name
-service.get('/:restaurantName', (request, response) => {
-    console.log("Request was gotten for a restaurants data");
-
-});
-// Get restaurant info based on its location
-
-
-// TODO
-
-
+//Variable to hold the service
+let service = null;
+// Function to set up the service
+async function setupService() {
+    service = express();
+    service.use(express.json());
+    // Get all restaurants with the name
+    service.get('/:restaurantName', (request, response) => {
+        console.log("Request was gotten for a restaurants data.");
+        output = querySQLConnection('SELECT * FROM drivethru.restaurant');
+        console.log(output);
+    });
+}
 
 /*
 * -------------------------------------------------------
@@ -73,10 +81,15 @@ service.get('/:restaurantName', (request, response) => {
 * -------------------------------------------------------
 */
 
-// Set up the SQL connection
-createSQLConnection();
-// Start the web service
-const port = 8443;
-service.listen(port, () => {
-    console.log("Drivethru webservice is live");
-});
+// Async top level function to support async requests
+(async function () {
+    // Set up the SQL connection
+    await createSQLConnection();
+    // Set up the service
+    await setupService();
+    // Start the web service
+    const port = 8443;
+    service.listen(port, () => {
+        console.log("The drivethru webservice is live.");
+    });
+})();
