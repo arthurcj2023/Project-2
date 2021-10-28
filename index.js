@@ -83,6 +83,12 @@ function setupService() {
         response.set('Access-Control-Allow-Origin', '*');
         next();
     });
+    // Allow the options endpoint to work
+    service.options('*', (request, response) => {
+        response.set('Access-Control-Allow-Headers', 'Content-Type');
+        response.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
+        response.sendStatus(200);
+      });
 
     /*
     *
@@ -144,32 +150,107 @@ function setupService() {
     service.get('/chain/:chainId', (request, response) => {
         const chainId = request.params.chainId;
         const query = `SELECT * from drivethru.chain WHERE drivethru.chain.CHAIN_ID = ${chainId}`;
-        // TODO query
+        connection.query(query, (error, rows) => {
+            if (error) {
+                response.status(500);
+                response.json({
+                    ok: false,
+                    results: error.message,
+                });
+            } else {
+                const json = JSON.parse(JSON.stringify(rows));
+                let chain = `{ "chainId":${chainId}, "chainName":"${json[0].CHAIN_NAME}", "chainPhone":"${json[0].CHAIN_PHONE}"}`;
+                response.json({
+                    ok: true,
+                    results: JSON.parse(chain),
+                });
+            }
+        });
     });
     // Get a restaurant
     service.get('/restaurant/:restId', (request, response) => {
         const restId = request.params.restId;
         const query = `SELECT * FROM drivethru.restaurant WHERE drivethru.restaurant.REST_ID = ${restId}`;
-        // TODO query
+        connection.query(query, (error, rows) => {
+            if (error) {
+                response.status(500);
+                response.json({
+                    ok: false,
+                    results: error.message,
+                });
+            } else {
+                const json = JSON.parse(JSON.stringify(rows));
+                const rest = `{"restId": ${json[0].REST_ID}, "chainId": ${json[0].CHAIN_ID}, "restLocation": "${json[0].REST_LOCATION}"}`;
+                response.json({
+                    ok: true,
+                    results: JSON.parse(rest),
+                });
+            }
+        });
     });
     // Get a Measurement
     service.get('/measurement/:measId', (request, response) => {
         const measId = request.params.measId;
-        const query = `SELECT * FROM drivethru.measuremnet WHERE drivethru.measurement.MEAS_ID = ${measId}`;
-        // TODO query
+        const query = `SELECT * FROM drivethru.measurement WHERE drivethru.measurement.MEAS_ID = ${measId}`;
+        connection.query(query, (error, rows) => {
+            if (error) {
+                response.status(500);
+                response.json({
+                    ok: false,
+                    results: error.message,
+                });
+            } else {
+                const json = JSON.parse(JSON.stringify(rows));
+                const meas = `{"measId": ${json[0].MEAS_ID}, "restId": ${json[0].REST_ID}, "timeIn": "${json[0].MEAS_TIME_IN}", "timeOut": "${json[0].MEAS_TIME_OUT}", "driveThrough": ${json[0].MEAS_DRIVETHROUGH}}`;
+                response.json({
+                    ok: true,
+                    results: JSON.parse(meas),
+                });
+            }
+        });
     });
     // Get an option
     service.get('/option/:optionId', (request, response) => {
         const optionId = request.params.optionId;
         const query = `SELECT * FROM drivethru.option WHERE drivethru.option.OPTION_ID = ${optionId}`;
-        // TODO query
+        connection.query(query, (error, rows) => {
+            if (error) {
+                response.status(500);
+                response.json({
+                    ok: false,
+                    results: error.message,
+                });
+            } else {
+                const json = JSON.parse(JSON.stringify(rows));
+                const options = `{"optionId":${optionId}, "optionName":"${json[0].OPTION_NAME}"}`;
+                response.json({
+                    ok: true,
+                    results: JSON.parse(options),
+                });
+            }
+        });
     });
     // Get an accessibility binding
     service.get('/accessibility/:restId/:optionId', (request, response) => {
         const restId = request.params.restId;
         const optionId = request.params.optionId;
         const query = `SELECT * FROM drivethru.accessibility WHERE drivethru.accessibility.REST_ID = ${restId} AND drivethru.accessibility.OPTION_ID = ${optionId}`;
-        // TODO query
+        connection.query(query, (error, rows) => {
+            if (error) {
+                response.status(500);
+                response.json({
+                    ok: false,
+                    results: error.message,
+                });
+            } else {
+                const json = JSON.parse(JSON.stringify(rows));
+                let accessibility = `{"restId": ${json[0].REST_ID}, "optionId": ${json[0].OPTION_ID}}`;
+                response.json({
+                    ok: true,
+                    results: JSON.parse(accessibility),
+                });
+            }
+        });
     });
     // Get all chains and their contact info
     service.get('/chains', (request, response) => {
@@ -243,7 +324,7 @@ function setupService() {
             }
         });
     });
-    // Get all restaurants that have a drivethrough 
+    // Get all restaurants that have a drivethrough or not
     service.get('/restaurantLocations/:drivethrough', (request, response) => {
         const driveThrough = request.params.drivethrough == 0 ? 0 : 1;
         const query = `SELECT DISTINCT drivethru.restaurant.REST_LOCATION FROM drivethru.restaurant JOIN drivethru.measurement ON drivethru.restaurant.REST_ID = drivethru.measurement.REST_ID WHERE drivethru.measurement.MEAS_DRIVETHROUGH = ${driveThrough};`;
