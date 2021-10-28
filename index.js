@@ -10,6 +10,7 @@
 const { response } = require('express');
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
 const mysql = require('mysql');
 
 /*
@@ -350,6 +351,10 @@ function setupService() {
             }
         });
     });
+    // Get the report.html page
+    service.get('/report.html', (request, response) => {
+        response.sendFile(path.join(__dirname, 'report.html'));
+    });
 
     /*
     *
@@ -371,9 +376,9 @@ function setupService() {
     service.patch('/restaurant/:restId', (request, response) => {
         const restId = request.params.restId;
         const restLocation = filterText(request.body.location);
-        const driveThrough = request.body.driveThrough;
+        const chainId = request.body.chainId;
         const query = `UPDATE drivethru.restaurant SET drivethru.restaurant.REST_LOCATION = 
-    "${restLocation}", drivethru.restaurant.REST_DRIVETHROUGH = ${driveThrough} WHERE 
+    "${restLocation}", drivethru.restaurant.CHAIN_ID = ${chainId} WHERE 
     drivethru.restaurant.REST_ID = ${restId}`;
         respondSilently(query, response);
     });
@@ -409,7 +414,7 @@ function setupService() {
     // Updates a chain's phone number
     service.patch('/chain/phoneNumber/:chainId', (request, response) => {
         const chainId = request.params.chainId;;
-        const newPhoneNumber = filterText(request.body.newPhoneNumber);
+        const newPhoneNumber = filterText(request.body.phone);
         const query = `UPDATE drivethru.chain SET drivethru.chain.CHAIN_PHONE = 
         "${newPhoneNumber}" WHERE drivethru.chain.CHAIN_ID = ${chainId};`;
         respondSilently(query, response);
