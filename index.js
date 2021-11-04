@@ -58,6 +58,7 @@ function respondSilently(query, response) {
             response.status(204);
             response.json({
                 ok: true,
+                results: 'Success'
             });
         }
     });
@@ -84,6 +85,8 @@ function setupService() {
         response.set('Access-Control-Allow-Origin', '*');
         next();
     });
+    // Get the ERD
+    service.use('/pdf', express.static(__dirname));
     // Allow the options endpoint to work
     service.options('*', (request, response) => {
         response.set('Access-Control-Allow-Headers', 'Content-Type');
@@ -202,6 +205,7 @@ function setupService() {
                 });
             } else {
                 const json = JSON.parse(JSON.stringify(rows));
+                console.log(json)
                 const meas = `{"measId": ${json[0].MEAS_ID}, "restId": ${json[0].REST_ID}, "timeIn": "${json[0].MEAS_TIME_IN}", "timeOut": "${json[0].MEAS_TIME_OUT}", "driveThrough": ${json[0].MEAS_DRIVETHROUGH}}`;
                 response.json({
                     ok: true,
@@ -307,7 +311,7 @@ function setupService() {
     service.get('/phoneNumber/:chainName', (request, response) => {
         const chainName = filterText(request.params.chainName);
         console.log(chainName);
-        const query = `SELECT drivethru.chain.CHAIN_PHONE FROM drivethru.chain WHERE driveThru.chain.CHAIN_NAME = "${chainName}"`;
+        const query = `SELECT drivethru.chain.CHAIN_PHONE FROM drivethru.chain WHERE drivethru.chain.CHAIN_NAME = "${chainName}"`;
         connection.query(query, (error, rows) => {
             if (error) {
                 response.status(500);
@@ -318,7 +322,7 @@ function setupService() {
             } else {
                 const json = JSON.parse(JSON.stringify(rows));
                 const contact = `{ "${chainName}":"${json[0].CHAIN_PHONE}" }`; 
-                response.json({
+                response.json({ 
                     ok: true,
                     results: JSON.parse(contact),
                 });
