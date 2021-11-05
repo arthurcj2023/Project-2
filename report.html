@@ -74,24 +74,25 @@
         <li>My git repository has commits starting a few days ago until now.</li>
         <li>This service responds to https://project2.shoresabroad.com:8443/report.html with this page</li>
     </ol>
-    <h2>Service description:</h2>
-    <p>This service is built as the back end of a restaurant wait time app. It gets information and modifies from a
-        database in 3NF. It has 5 tables: Chain, Restaurant, Measurement, Accessibility, and Option. Chain contains a
-        name and a phone number, restaurant contains the location as a geohash that is accurate to 10 meters, and the
-        chain that the restaurant is a part of. Restaurants that are not part of a proper "chain" still have a chain
-        representation in the chains table to properly excersize "One version of the truth." The measurements table has
-        the restaurant the measurement was made at, the time in, the time out, and whether the measurement was of a
-        drivethrough or not. The options table is for things such as a restaurant offering gluten free or vegeterian
-        options on their menu, and because of the many to many relationship of options and restaurants, the
-        accessibility table is a linking table with the composite key of the restaurants id and the options id. To
-        reduce processing time of the endpoint to allow for more traffic volume, all patch, post and delete requests
-        only return a status of 204. All get requests return their important information. The goal of this web service
-        was to reduce server-side processing time and instead offload things such as geohash translation and cross-table
-        association to the client. These endpoints serve as something an admin would have access to, and in the end user
-        application, the user will have access to fewer endpoints. The database contains anti-sql injection checks to
-        verify that the user is not attempting to inject code into the server. The anti-injection code works by
-        stripping escape sequences and the sql server is configured to stop its query upon encountering some for of
-        request-parsing error. Due to the complexity of the database, I have provided the data-dependency diagram, and the data dictionary at the respective links: </p>
+    <h2>Additional notes:</h2>
+    <p>This service is built a part of a project for CS 374: Databases. This service accesses and manipulates a database
+        that is in 3NF. I have included most of the design specifications and justifications at the following links:
+    <ul>
+        <li>ERD: <a
+                href="https://project2.shoresabroad.com:8443/pdf/ERD.pdf">https://project2.shoresabroad.com:8443/pdf/ERD.pdf</a>
+        </li>
+        <li>Data Dictionary: <a
+                href="https://project2.shoresabroad.com:8443/pdf/Data Dictionary.pdf">https://project2.shoresabroad.com:8443/pdf/Data
+                Dictionary.pdf</a></li>
+        <li>Data Dependency Diagram: <a
+                href="https://project2.shoresabroad.com:8443/pdf/Data Dependency Diagram.pdf">https://project2.shoresabroad.com:8443/pdf/Data Dependency Diagram.pdf</a></li>
+    </ul>
+    The service aims to reduce server time processing due to the target volume of requests, meaning that post, edit, and
+    delete requests will only return status 204 and Success as the json response. Get requests will return formatted
+    json data that accurately represents the format of the data types of the respective fields in the request. This
+    service is the full suite of queries; however, for the client application, most of these endpoints will be
+    unavailable due to security and data privacy risks.
+    </p>
 </body>
 
 </html>

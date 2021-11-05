@@ -258,7 +258,7 @@ function setupService() {
         });
     });
     // Get all chains and their contact info
-    service.get('/chains', (request, response) => {
+    service.get('/chainNames', (request, response) => {
         const query = 'SELECT drivethru.chain.CHAIN_NAME FROM drivethru.chain;';
         connection.query(query, (error, rows) => {
             if (error) {
@@ -359,6 +359,15 @@ function setupService() {
     service.get('/report.html', (request, response) => {
         response.sendFile(path.join(__dirname, 'report.html'));
     });
+    // Dump the chains table
+
+    // Dump the restaurants table
+
+    // Dump the Measurements table
+
+    // Dump the Options table
+
+    // Dump the accessibiltiy table
 
     /*
     *
