@@ -360,14 +360,100 @@ function setupService() {
         response.sendFile(path.join(__dirname, 'report.html'));
     });
     // Dump the chains table
-
+    service.get('/chains', (request, response) => {
+        const query = 'SELECT * from drivethru.chain;';
+        connection.query(query, (error, rows) => {
+            if (error) {
+                response.status(500);
+                response.json({
+                    ok: false,
+                    results: error.message,
+                });
+            } else {
+                const json = JSON.parse(JSON.stringify(rows));
+                response.json({
+                    ok: true,
+                    results: json
+                });
+            }
+        });
+    });
     // Dump the restaurants table
-
+    service.get('/restaurants', (request, response) => {
+        const query = 'SELECT * FROM drivethru.restaurant;';
+        connection.query(query, (error, rows) => {
+            if (error) {
+                response.status(500);
+                response.json({
+                    ok: false,
+                    results: error.message,
+                });
+            } else {
+                const json = JSON.parse(JSON.stringify(rows));
+                response.json({
+                    ok: true,
+                    results: json
+                });
+            }
+        });
+    });
     // Dump the Measurements table
-
+    service.get('/measurements', (request, response) => {
+        const query = 'SELECT * FROM drivethru.measurement;';
+        connection.query(query, (error, rows) => {
+            if (error) {
+                response.status(500);
+                response.json({
+                    ok: false,
+                    results: error.message,
+                });
+            } else {
+                const json = JSON.parse(JSON.stringify(rows));
+                response.json({
+                    ok: true,
+                    results: json
+                });
+            }
+        });
+    });
     // Dump the Options table
-
+    service.get('/options', (request, response) => {
+        const query = 'SELECT * FROM drivethru.option;';
+        connection.query(query, (error, rows) => {
+            if (error) {
+                response.status(500);
+                response.json({
+                    ok: false,
+                    results: error.message,
+                });
+            } else {
+                const json = JSON.parse(JSON.stringify(rows));
+                response.json({
+                    ok: true,
+                    results: json
+                });
+            }
+        });
+    });
     // Dump the accessibiltiy table
+    service.get('/accessibilities', (request, response) => {
+        query = 'SELECT * FROM drivethru.accessibility;'
+        connection.query(query, (error, rows) => {
+            if (error) {
+                response.status(500);
+                response.json({
+                    ok: false,
+                    results: error.message,
+                });
+            } else {
+                const json = JSON.parse(JSON.stringify(rows));
+                response.json({
+                    ok: true,
+                    results: json
+                });
+            }
+        });
+    });
 
     /*
     *
@@ -381,7 +467,7 @@ function setupService() {
         const chainName = filterText(request.body.name);
         const chainPhone = filterText(request.body.phone);
         const query = `UPDATE drivethru.chain SET drivethru.chain.CHAIN_NAME = 
-    "${chainName}", drivethru.CHAIN_PHONE = "${chainPhone}" WHERE 
+    "${chainName}", drivethru.chain.CHAIN_PHONE = "${chainPhone}" WHERE 
     drivethru.chain.CHAIN_ID = ${chainId}`;
         respondSilently(query, response);
     });
@@ -495,7 +581,7 @@ function setupService() {
         drivethru.restaurant.REST_ID JOIN drivethru.chain ON drivethru.chain.CHAIN_ID = 
         drivethru.restaurant.CHAIN_ID WHERE drivethru.restaurant.CHAIN_ID = 
         ${chainId}; DELETE drivethru.restaurant FROM drivethru.restaurant WHERE 
-        drivethru.restaurant.CHAIN_ID = ${chainId};`;
+        drivethru.restaurant.CHAIN_ID = ${chainId}; DELETE drivethru.chain FROM drivethru.chain WHERE drivethru.chain.CHAIN_ID = ${chainId}`;
         respondSilently(query, response);
     });
 }

@@ -8,52 +8,49 @@
 <body>
     <h2>Endpoints</h2>
     <ul>
-        <li>curl -X POST localhost:8443/chain --header 'Content-Type: application/json' --data '{"name": "{chainName}",
-            "phone": "{chainPhone}"}'</li>
-        <li>curl -X POST localhost:8443/restaurant --header 'Content-Type: application/json' --data '{"location":
-            "{restLocation}", "chainId": {chainId}}'</li>
-        <li>curl -X POST localhost:8443/meaurement --header 'Content-Type: application/json' --data '{"restId":
-            {restId}, "yearIn": {yearIn}, "monthIn": {monthIn}, "dayIn": {dayIn}, "timeIn": {timeIn}, "yearOut":
-            {yearOut}, "monthOut": {monthOut}, "dayOut": {dayOut}, "timeOut": {timeOut}, "drivethrough":
+        <li>curl -X POST https://project2.shoresabroad.com:8443/chain --header 'Content-Type: application/json' --data
+            '{"name": "{chainName}", "phone": "{chainPhone}"}'</li>
+        <li>curl -X POST https://project2.shoresabroad.com:8443/restaurant --header 'Content-Type: application/json'
+            --data '{"location": "{restLocation}", "chainId": {chainId}}'</li>
+        <li>curl -X POST https://project2.shoresabroad.com:8443/meaurement --header 'Content-Type: application/json'
+            --data '{"restId": {restId}, "yearIn": {yearIn}, "monthIn": {monthIn}, "dayIn": {dayIn}, "timeIn": {timeIn},
+            "yearOut": {yearOut}, "monthOut": {monthOut}, "dayOut": {dayOut}, "timeOut": {timeOut}, "drivethrough":
             {drivethrough}}'</li>
-        <li>curl -X POST localhost:8443/option --header 'Content-Type: application/json' --data '{"name":
-            "{optionName}"}'</li>
+        <li>curl -X POST https://project2.shoresabroad.com:8443/option --header 'Content-Type: application/json' --data
+            '{"name": "{optionName}"}'</li>
         <li>curl -X POST localhost:8443/accessibility --header 'Content-Type: application/json' --data '{"optionId":
             {optionId}, "restId": {restId}}'</li>
-        <li>curl localhost:8443/chain/{chainId}</li>
-        <li>curl localhost:8443/restaurant/{restId}</li>
-        <li>curl localhost:8443/option/{optionId}</li>
-        <li>curl localhost:8443/measurement/{measId}</li>
-        <li>curl localhost:8443/accessibility/{restid}/{optionId}</li>
-        <li>curl localhost:8443/chains</li>
-        <li>curl localhost:8443/phoneNumbers</li>
-        <li>curl localhost:8443/phoneNumber/{chainName}</li>
-        <li>curl localhost:8443/restaurantLocations/{isDrivethrough}</li>
-        <li>curl localhost:8443/report.html</li>
-        <li>curl -X PATCH localhost:8443/chain/{chainId} --header 'Content-Type: application/json' --data '{"name":
-            "{chainName}", "phone": "{chainPhone}"}'</li>
-        <li>curl -X PATCH localhost:8443/restaurant/{restId} --header 'Content-Type: application/json' --data
-            '{"location": "{restLocation}", "chainId": {chainId}}'</li>
-        <li>curl -X PATCH localhost:8443/option/{optionId} --header 'Content-Type: application/json' --data '{"name":
-            "{optionName}"}'</li>
-        <li>curl -X PATCH localhost:8443/measurement/{measId} --header 'Content-Type: application/json' --data '{"name":
-            "{chainName}", "phone": "{chainPhone}"}'</li>
-        <li>curl -X PATCH localhost:8443/chain/phoneNumber/{chainId} --header 'Content-Type: application/json' --data
-            '{"phone": "{phoneNumber}"}'</li>
-        <li>curl -X PATCH localhost:8443/restaurant/location/{restId} --header 'Content-Type: application/json' --data
-            '{"location": "{location}"}'</li>
-        <li>curl -X PATCH localhost:8443/chain/name/{chainId} --header 'Content-Type: application/json' --data '{"name":
-            "{chainName}"}'</li>
-        <li>curl -X DELETE localhost:8443/chain --header 'Content-Type: application/json' --data '{"id": {chainId}'</li>
-        <li>curl -X DELETE localhost:8443/restaurant --header 'Content-Type: application/json' --data '{"id": {restId}'
+        <li>curl -X POST https://project2.shoresabroad.com:8443/accessibility --header 'Content-Type: application/json' --data '{"optionId": {optionId}, "restId": {restId}}'</li>
+        <li>curl https://project2.shoresabroad.com:8443/chain/{chainId}</li>
+        <li>curl https://project2.shoresabroad.com:8443/restaurant/{restId}</li>
+        <li>curl https://project2.shoresabroad.com:8443/option/{optionId}</li>
+        <li>curl https://project2.shoresabroad.com:8443/measurement/{measId}</li>
+        <li>curl https://project2.shoresabroad.com:8443/accessibility/{restid}/{optionId}</li>
+        <li>curl https://project2.shoresabroad.com:8443/chains</li>
+        <li>curl https://project2.shoresabroad.com:8443/phoneNumbers</li>
+        <li>curl https://project2.shoresabroad.com:8443/phoneNumber/{chainName}</li>
+        <li>curl https://project2.shoresabroad.com:8443/report.html</li>
+        <li>curl https://project2.shoresabroad.com:8443/pdf/ERD.pdf</li>
+        <li>curl https://project2.shoresabroad.com:8443/pdf/Data Dictionary.pdf</li>
+        <li>curl https://project2.shoresabroad.com:8443/pdf/Data DependencyDiagram.pdf</li>
+        <li>curl https://project2.shoresabroad.com:8443/chains</li>
+        <li>curl https://project2.shoresabroad.com:8443/restaurants</li>
+        <li>curl https://project2.shoresabroad.com:8443/measurements</li>
+        <li>curl https://project2.shoresabroad.com:8443/options</li>
+        <li>curl https://project2.shoresabroad.com:8443/accessibilities</li>
+        <li>curl -X PATCH https://project2.shoresabroad.com:8443/chain/{chainId} --header 'Content-Type: application/json' --data '{"name": "{chainName}", "phone": "{chainPhone}"}'</li>
+        <li>curl -X PATCH https://project2.shoresabroad.com:8443/restaurant/{restId} --header 'Content-Type: application/json' --data '{"location": "{restLocation}", "chainId": {chainId}}'</li>
+        <li>curl -X PATCH https://project2.shoresabroad.com:8443/option/{optionId} --header 'Content-Type: application/json' --data '{"name": "{optionName}"}'</li>
+        <li>curl -X PATCH https://project2.shoresabroad.com:8443/measurement/{measId} --header 'Content-Type: application/json' --data '{"name": "{chainName}", "phone": "{chainPhone}"}'</li>
+        <li>curl -X PATCH https://project2.shoresabroad.com:8443/restaurant/location/{restId} --header 'Content-Type: application/json' --data '{"location": "{location}"}'</li>
+        <li>curl -X PATCH https://project2.shoresabroad.com:8443/chain/name/{chainId} --header 'Content-Type: application/json' --data '{"name": "{chainName}"}'</li>
+        <li>curl -X DELETE https://project2.shoresabroad.com:8443/chain --header 'Content-Type: application/json' --data '{"id": {chainId}'</li>
+        <li>curl -X DELETE https://project2.shoresabroad.com:8443/restaurant --header 'Content-Type: application/json' --data '{"id": {restId}'
         </li>
-        <li>curl -X DELETE localhost:8443/measurement --header 'Content-Type: application/json' --data '{"measId":
-            {measId}, "restId": {restId}, "yearIn": {yearIn}, "monthIn": {monthIn}, "dayIn": {dayIn}, "timeIn":
-            {timeIn}, "yearOut": {yearOut}, "monthOut": {monthOut}, "dayOut": {dayOut}, "timeOut": {timeOut},
-            "drivethrough": {drivethrough}}'</li>
-        <li>curl -X DELETE localhost:8443/accessibility --header 'Content-Type: application/json' --data '{"restId":
+        <li>curl -X DELETE https://project2.shoresabroad.com:8443/measurement --header 'Content-Type: application/json' --data '{"id": {measId}</li>
+        <li>curl -X DELETE https://project2.shoresabroad.com:8443/accessibility --header 'Content-Type: application/json' --data '{"restId":
             {restId}, "optionId": {optionId}'</li>
-        <li>curl -X DELETE localhost:8443/option --header 'Content-Type: application/json' --data '{"id": {optionId}'
+        <li>curl -X DELETE https://project2.shoresabroad.com:8443/option --header 'Content-Type: application/json' --data '{"id": {optionId}'
         </li>
     </ul>
     <h2>Report</h2>
@@ -85,7 +82,8 @@
                 href="https://project2.shoresabroad.com:8443/pdf/Data Dictionary.pdf">https://project2.shoresabroad.com:8443/pdf/Data
                 Dictionary.pdf</a></li>
         <li>Data Dependency Diagram: <a
-                href="https://project2.shoresabroad.com:8443/pdf/Data Dependency Diagram.pdf">https://project2.shoresabroad.com:8443/pdf/Data Dependency Diagram.pdf</a></li>
+                href="https://project2.shoresabroad.com:8443/pdf/Data Dependency Diagram.pdf">https://project2.shoresabroad.com:8443/pdf/Data
+                Dependency Diagram.pdf</a></li>
     </ul>
     The service aims to reduce server time processing due to the target volume of requests, meaning that post, edit, and
     delete requests will only return status 204 and Success as the json response. Get requests will return formatted
